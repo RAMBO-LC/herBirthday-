@@ -1,0 +1,173 @@
+/* ================================================
+   Scene Container
+   ================================================ */
+
+.scene {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+  z-index: 1;
+}
+
+.scene.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ================================================
+   Scene 1 — Story Text
+   ================================================ */
+
+.story-text {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-weight: 300;
+  text-align: center;
+  padding: 0 2rem;
+  opacity: 0;
+  transition: opacity 1.5s ease-in;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+  max-width: 700px;
+  line-height: 1.6;
+  white-space: pre-line;
+  letter-spacing: 0.02em;
+}
+
+.story-text.visible {
+  opacity: 1;
+}
+
+.story-text.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+/* Tap Hint */
+.tap-hint {
+  position: fixed;
+  bottom: 2rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  animation: hintPulse 3s ease-in-out infinite;
+  animation-delay: 2.5s;
+}
+
+.tap-hint.hidden {
+  display: none;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.4; }
+}
+
+/* ================================================
+   Scene 2 — Number Scroll
+   ================================================ */
+
+.number-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.digit-wrapper {
+  width: clamp(60px, 15vw, 120px);
+  height: clamp(80px, 20vw, 160px);
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  backdrop-filter: blur(4px);
+}
+
+/* Subtle top/bottom fade masks */
+.digit-wrapper::before,
+.digit-wrapper::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.digit-wrapper::before {
+  top: 0;
+  background: linear-gradient(to bottom, #000 0%, transparent 100%);
+}
+
+.digit-wrapper::after {
+  bottom: 0;
+  background: linear-gradient(to top, #000 0%, transparent 100%);
+}
+
+.digit-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.digit-strip span {
+  width: 100%;
+  height: clamp(80px, 20vw, 160px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Number label beneath */
+.number-label {
+  margin-top: 2rem;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  opacity: 0;
+  transition: opacity 1.5s ease-in;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+.number-label.visible {
+  opacity: 1;
+}
+
+/* Glow effect on final number */
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    text-shadow:
+      0 0 30px rgba(255, 255, 255, 0.5),
+      0 0 60px rgba(255, 200, 200, 0.2),
+      0 0 100px rgba(255, 180, 220, 0.1);
+  }
+}
+
+.digit-strip.landed span {
+  animation: glow 2.5s ease-in-out infinite;
+}
+
+/* ================================================
+   Floating Particles
+   ================================================ */
+
+.particles-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
